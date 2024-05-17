@@ -7,13 +7,17 @@ export default function Update() {
   let { id } = useParams();
 
   let [register, setRegister] = useState({
-    name: '',
-    phone: '',
-    email: '',
+    title: '',
+    description: '',
+    price: '',
+    rating: {
+      count: '',
+      rate: '',
+    },
   });
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/Employee/${id}`).then((r) => {
+    axios.get(`http://localhost:3000/Products/${id}`).then((r) => {
       console.log(r.data);
       setRegister(r.data);
     });
@@ -28,15 +32,14 @@ export default function Update() {
     console.log(register);
     e.preventDefault();
 
-    axios.put(`http://localhost:3000/Employee/${id}`, register).then(
+    axios.put(`http://localhost:3000/Products/${id}`, register).then(
       (d) => console.log(d),
       (e) => console.log(e)
     );
 
     setRegister({
-      name: '',
-      email: '',
-      phone: '',
+      title: '',
+      description: '',
     });
 
     navigate('/');
@@ -47,29 +50,22 @@ export default function Update() {
       <form onSubmit={handleSubmit}>
         <input
           type='text'
-          placeholder='Enter your name'
-          id='name'
-          name='name'
-          value={register.name}
+          placeholder='Enter title'
+          id='title'
+          name='title'
+          value={register.title}
           onChange={handleChange}
         />
 
         <input
           type='text'
-          placeholder='Enter your mobile'
-          id='phone'
-          name='phone'
-          value={register.phone}
+          placeholder='Enter you'
+          id='description'
+          name='description'
+          value={register.description}
           onChange={handleChange}
         />
-        <input
-          type='email'
-          placeholder='Enter your email'
-          id='email'
-          name='email'
-          value={register.email}
-          onChange={handleChange}
-        />
+
         <button type='submit'>Update Details</button>
       </form>
     </div>
