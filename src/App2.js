@@ -614,123 +614,189 @@
 //*-----------------------------------------------------------------------------------
 //! fbc -> controlled form using ( onSubmit and onChange event handler )
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+
+// export default function App2() {
+//   let [data, setData] = useState({
+//     username: '',
+//     password: '',
+//     email: '',
+//     DOB: '',
+//     gender: '',
+//     skills: [],
+//   });
+
+//   const Country = [
+//     { code: 'IN', name: 'India' },
+//     { code: 'US', name: 'United States' },
+//     { code: 'UK', name: 'United Kingdom' },
+//   ];
+
+//   const handleChange = (e) => {
+//     setData({ ...data, [e.target.name]: e.target.value });
+//   };
+
+//   const handleChangeSkills = (e) => {
+//     const { value, checked } = e.target;
+
+//     setData((prevData) => ({
+//       ...prevData,
+//       skills: checked
+//         ? [...prevData.skills, value] // Add skill if checked
+//         : prevData.skills.filter((skill) => skill !== value), // Remove skill if unchecked
+//     }));
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     console.log(`final data is `, data);
+//   };
+//   return (
+//     <>
+//       <form onSubmit={handleSubmit}>
+//         <h1>Sign Up</h1>
+//         <input
+//           type='text'
+//           name='username'
+//           id='username'
+//           placeholder='enter name'
+//           onChange={handleChange}
+//           value={data.username}
+//         />
+//         <br />
+//         <input
+//           type='password'
+//           name='password'
+//           id='password'
+//           placeholder='enter password'
+//           onChange={handleChange}
+//           value={data.password}
+//         />
+//         <br />
+//         <input
+//           type='email'
+//           name='email'
+//           id='email'
+//           onChange={handleChange}
+//           placeholder='enter your email'
+//           value={data.email}
+//         />
+//         <br />
+//         <input
+//           type='date'
+//           name='DOB'
+//           id='DOB'
+//           onChange={handleChange}
+//           value={data.DOB}
+//         />
+//         <br />
+//         {/* we have to use one parent div whenever we are using multiple radio button  hence we can pass the onChange event inside the parent div */}
+//         <div className='gender' onChange={handleChange}>
+//           <input type='radio' name='gender' id='male' value={'male'} />
+//           male <input type='radio' name='gender' id='female' value={'female'} />
+//           Female
+//           <input type='radio' name='gender' id='others' value={'others'} />
+//           Others
+//         </div>
+//         <br />
+//         {/* we have to use one parent div whenever we are using multiple checkbox button  hence we can pass the onChange event inside the parent div */}
+//         <div className='skills' onChange={handleChangeSkills}>
+//           <input type='checkbox' name='skills' id='react' value={'react'} />
+//           React
+//           <input type='checkbox' name='skills' id='java' value={'java'} />
+//           Java
+//           <input type='checkbox' name='skills' id='nodeJs' value={'nodeJs'} />
+//           NodeJs
+//           <input type='checkbox' name='skills' id='sdlc' value={'sdlc'} />
+//           SDLC
+//           <input type='checkbox' name='skills' id='sql' value={'sql'} />
+//           Sql
+//         </div>
+//         <br />
+//         <select name='country' id='country' onChange={handleChange}>
+//           {Country.map((v, i) => {
+//             let { code, name } = v;
+//             return (
+//               <option value={name} key={code}>
+//                 {name}
+//               </option>
+//             );
+//           })}
+//         </select>
+//         <button type='submit'>Submit</button>
+//       </form>
+//     </>
+//   );
+// }
+
+//*-----------------------------------------------------------------------------------
+//! functional based component: useEffect ( involves all 3 stages of component lifecycle) : Example based on fetching Api
+// import React, { useState, useEffect } from 'react';
+
+// export default function App() {
+//   const [data, setData] = useState([]);
+
+//   useEffect(() => {
+//     // Define an async function inside useEffect
+//     const fetchData = async () => {
+//       try {
+//         const response = await fetch('https://fakestoreapi.com/products'); // Fetch data
+//         const jsonData = await response.json(); // Convert response to JSON
+//         setData(jsonData); // Update state with fetched data
+//         console.log(jsonData);
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//       }
+//     };
+
+//     fetchData(); // Call the async function
+//   }, []); // Empty dependency array -> Runs only on mount
+
+//   return (
+//     <div>
+//       {data.map((v, i) => (
+//         <h3 key={v.id}>{v.title}</h3> // Using v.id as a unique key
+//       ))}
+//     </div>
+//   );
+// }
+
+//*-----------------------------------------------------------------------------------
+
+//! useReducer() Hook:
+
+import React, { useReducer } from 'react';
 
 export default function App2() {
-  let [data, setData] = useState({
-    username: '',
-    password: '',
-    email: '',
-    DOB: '',
-    gender: '',
-    skills: [],
-  });
-
-  const Country = [
-    { code: 'IN', name: 'India' },
-    { code: 'US', name: 'United States' },
-    { code: 'UK', name: 'United Kingdom' },
-  ];
-
-  const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
-  };
-
-  const handleChangeSkills = (e) => {
-    const { value, checked } = e.target;
-
-    setData((prevData) => ({
-      ...prevData,
-      skills: checked
-        ? [...prevData.skills, value] // Add skill if checked
-        : prevData.skills.filter((skill) => skill !== value), // Remove skill if unchecked
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(`final data is `, data);
-  };
+  let [state, dispatch] = useReducer(reducer_function, { count: 0 });
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <h1>Sign Up</h1>
-        <input
-          type='text'
-          name='username'
-          id='username'
-          placeholder='enter name'
-          onChange={handleChange}
-          value={data.username}
-        />
-        <br />
-        <input
-          type='password'
-          name='password'
-          id='password'
-          placeholder='enter password'
-          onChange={handleChange}
-          value={data.password}
-        />
-        <br />
-        <input
-          type='email'
-          name='email'
-          id='email'
-          onChange={handleChange}
-          placeholder='enter your email'
-          value={data.email}
-        />
-        <br />
-        <input
-          type='date'
-          name='DOB'
-          id='DOB'
-          onChange={handleChange}
-          value={data.DOB}
-        />
-        <br />
-        {/* we have to use one parent div whenever we are using multiple radio button  hence we can pass the onChange event inside the parent div */}
-        <div className='gender' onChange={handleChange}>
-          <input type='radio' name='gender' id='male' value={'male'} />
-          male <input type='radio' name='gender' id='female' value={'female'} />
-          Female
-          <input type='radio' name='gender' id='others' value={'others'} />
-          Others
-        </div>
-        <br />
-        {/* we have to use one parent div whenever we are using multiple checkbox button  hence we can pass the onChange event inside the parent div */}
-        <div className='skills' onChange={handleChangeSkills}>
-          <input type='checkbox' name='skills' id='react' value={'react'} />
-          React
-          <input type='checkbox' name='skills' id='java' value={'java'} />
-          Java
-          <input type='checkbox' name='skills' id='nodeJs' value={'nodeJs'} />
-          NodeJs
-          <input type='checkbox' name='skills' id='sdlc' value={'sdlc'} />
-          SDLC
-          <input type='checkbox' name='skills' id='sql' value={'sql'} />
-          Sql
-        </div>
-        <br />
-        <select name='country' id='country' onChange={handleChange}>
-          {Country.map((v, i) => {
-            let { code, name } = v;
-            return (
-              <option value={name} key={code}>
-                {name}
-              </option>
-            );
-          })}
-        </select>
-        <button type='submit'>Submit</button>
-      </form>
-    </>
+    <div>
+      <button onClick={() => dispatch({ type: 'INCREMENT', data: 100 })}>
+        increment the count
+      </button>
+      <button onClick={() => dispatch({ type: 'DECREMENT' })}>
+        decrement the count
+      </button>
+      <button onClick={() => dispatch({ type: 'RESET' })}>reset to 0</button>
+      <br />
+      <h1>{state.count}</h1>
+    </div>
   );
 }
 
-//*-----------------------------------------------------------------------------------
-//*-----------------------------------------------------------------------------------
+let reducer_function = (state, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { ...state, count: state.count + action.data };
+    case 'DECREMENT':
+      return { ...state, count: state.count - 1 };
+    case 'RESET':
+      return { ...state, count: 0 };
+    default:
+      return state;
+  }
+};
+
 //*-----------------------------------------------------------------------------------
 //*-----------------------------------------------------------------------------------
 //*-----------------------------------------------------------------------------------
